@@ -7,12 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.example.project_25.entities.enums.OrderStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order")
@@ -27,7 +26,7 @@ public class Order implements Serializable{
 
 
 	@ManyToOne
-	@JoinTable(name="user_id")
+	@JoinColumn(name="user_id")
 	private User user;
 
 	public Order() {
