@@ -3,6 +3,7 @@ package com.example.project_25.entities;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,7 +31,6 @@ public class Order implements Serializable {
 	private Instant moment;
 	private Integer orderStatus;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -43,9 +43,11 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
 
-	//O argumento CascadeType.ALL é obrigatório para mapeamentos 1 para 1
-	//onde o id das duas entidades serão o mesmo. Ou seja, estamos definindo
-	//que o id da entidade payment será o mesmo que o da entidade order.
+	// O argumento CascadeType.ALL é obrigatório para mapeamentos 1 para 1
+	// onde o id das duas entidades serão o mesmo. Ou seja, estamos definindo
+	// que o id da entidade payment será o mesmo que o da entidade order.
+
+	@JsonIgnore
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
 
@@ -102,5 +104,35 @@ public class Order implements Serializable {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+
+	public Double getTotal() {
+		double total = 0.0;
+		for (OrderItem i : items) {
+			total += i.getPrice();
+		}
+
+		return total;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(moment, orderStatus, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		return Objects.equals(moment, other.moment) && Objects.equals(orderStatus, other.orderStatus)
+				&& Objects.equals(user, other.user);
+	}
+
+
+	
 
 }
