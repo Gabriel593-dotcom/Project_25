@@ -34,7 +34,6 @@ public class Product implements Serializable {
 	// que a nossa coleção inicie vazia e não nula.
 
 	@ManyToMany
-
 	// Em uma associação many-to-many, precisamos definir uma tabela auxiliar,
 	// desse modo, usamos a annotation @JoinTable, passando os seguintes parametros:
 	// o nome da tabela que será criada, a chave estrangeira da entidade em que
