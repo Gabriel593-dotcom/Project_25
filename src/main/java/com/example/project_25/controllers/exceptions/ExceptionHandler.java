@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import com.example.project_25.services.exceptions.ResourceAlreadyExistsException;
+import com.example.project_25.services.exceptions.DatabaseException;
 import com.example.project_25.services.exceptions.ResourceNotFoundException;
 
 //A @ControllerAdviceanotação foi introduzida pela primeira vez no Spring 3.2. Ele permite que você trate de exceções em
@@ -30,10 +30,10 @@ public class ExceptionHandler {
 		return handlerBuilder(error, status, notFoundException, request); 
 	}
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(ResourceAlreadyExistsException.class)
-	public ResponseEntity<StandardError> resourceAlreadyExists(HttpServletRequest request, ResourceAlreadyExistsException e){
-		String error = "Resource already exists";
-		HttpStatus status = HttpStatus.CONFLICT;
+	@org.springframework.web.bind.annotation.ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardError> databaseException(HttpServletRequest request, DatabaseException e){
+		String error = "Database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		return handlerBuilder(error, status, e, request);
 	}
 }
